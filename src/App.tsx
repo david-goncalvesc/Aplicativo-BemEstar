@@ -20,13 +20,13 @@ function App() {
           <Route
             path="/login"
             element={
-              isAuthenticated ? <Navigate to="/" replace /> : <LoginScreen />
+              isAuthenticated ? <Navigate to="/\" replace /> : <LoginScreen />
             }
           />
           <Route
             path="/register"
             element={
-              isAuthenticated ? <Navigate to="/" replace /> : <RegisterScreen />
+              isAuthenticated ? <Navigate to="/\" replace /> : <RegisterScreen />
             }
           />
           <Route
@@ -35,7 +35,7 @@ function App() {
               <ProtectedRoute>
                 <div className="pb-24">
                   <Routes>
-                    <Route path="/" element={<ProfileScreen />} />
+                    <Route path="/\" element={<ProfileScreen />} />
                     <Route path="/favorites" element={<FavoritesScreen />} />
                     <Route path="/emergency" element={<EmergencyScreen />} />
                     <Route path="/locations" element={<LocationsScreen />} />
