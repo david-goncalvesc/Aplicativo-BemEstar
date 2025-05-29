@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { LogIn } from 'lucide-react';
+import bcrypt from 'bcryptjs';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,19 +16,41 @@ const LoginScreen: React.FC = () => {
     setError('');
 
     try {
-      // Simulated login - replace with actual API call
-      if (email === 'demo@example.com' && password === 'password') {
-        login({
-          id: '1',
-          name: 'Demo User',
-          email: 'demo@example.com',
-        });
-        navigate('/');
-      } else {
-        setError('Credenciais inválidas');
+      // Recupera os dados do usuário registrado
+      const registeredUserData = localStorage.getItem('registeredUser');
+      
+      if (!registeredUserData) {
+        setError('Usuário não encontrado');
+        return;
       }
+
+      const registeredUser = JSON.parse(registeredUserData);
+
+      // Verifica se o email corresponde
+      if (email !== registeredUser.email) {
+        setError('Email ou senha incorretos');
+        return;
+      }
+
+      // Compara a senha usando bcrypt
+      const passwordMatch = await bcrypt.compare(password, registeredUser.password);
+
+      if (!passwordMatch) {
+        setError('Email ou senha incorretos');
+        return;
+      }
+
+      // Login bem-sucedido
+      login({
+        id: registeredUser.id || '1',
+        name: registeredUser.username,
+        email: registeredUser.email,
+      });
+
+      navigate('/');
     } catch (err) {
-      setError('Erro ao fazer login');
+      console.error('Erro durante o login:', err);
+      setError('Ocorreu um erro durante o login. Por favor, tente novamente.');
     }
   };
 
