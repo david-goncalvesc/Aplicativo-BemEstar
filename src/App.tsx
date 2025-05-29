@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import LoginScreen from './components/LoginScreen';
+import RegisterScreen from './components/RegisterScreen';
 import ProfileScreen from './components/ProfileScreen';
 import FavoritesScreen from './components/FavoritesScreen';
 import EmergencyScreen from './components/EmergencyScreen';
@@ -19,7 +20,13 @@ function App() {
           <Route
             path="/login"
             element={
-              isAuthenticated ? <Navigate to="/\" replace /> : <LoginScreen />
+              isAuthenticated ? <Navigate to="/" replace /> : <LoginScreen />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated ? <Navigate to="/" replace /> : <RegisterScreen />
             }
           />
           <Route
@@ -28,7 +35,7 @@ function App() {
               <ProtectedRoute>
                 <div className="pb-24">
                   <Routes>
-                    <Route path="/\" element={<ProfileScreen />} />
+                    <Route path="/" element={<ProfileScreen />} />
                     <Route path="/favorites" element={<FavoritesScreen />} />
                     <Route path="/emergency" element={<EmergencyScreen />} />
                     <Route path="/locations" element={<LocationsScreen />} />
